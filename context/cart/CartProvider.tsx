@@ -48,7 +48,6 @@ export const CartProvider: FC<PropsWithChildren<CartState>> = ({ children }) => 
 
     }, [])
 
-
     useEffect(() => {
         Cookie.set('cart', JSON.stringify(state.cart));
     }, [state.cart]);
