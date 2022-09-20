@@ -6,8 +6,10 @@ import { ErrorOutlined } from '@mui/icons-material';
 
 import { AuthLayout } from '../../components/layouts'
 import { validations } from '../../utils';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { oasisApi } from '../../api';
+import { AuthContext } from '../../context';
+import { useRouter } from 'next/router';
 
 
 
@@ -19,23 +21,25 @@ type FormData = {
 
 const RegisterPage = () => {
 
+    const { registerUser } = useContext(AuthContext);
+    const router = useRouter();
+
     const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
     const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
 
     const onRegisterForm = async ({ email, password, name }: FormData) => {
         setShowError(false);
+        const { hasError, message } = await registerUser(name, email, password);
 
-        try {
-            const { data } = await oasisApi.post('/user/register', { email, password, name });
-            const { token, user } = data;
-            console.log({ token, user })
-
-        } catch (error) {
-            console.log(error);
+        if (hasError) {
             setShowError(true);
+            setErrorMessage(message || '');
             setTimeout(() => setShowError(false), 3000);
         }
 
+        router.replace('/');
     }
 
     return (

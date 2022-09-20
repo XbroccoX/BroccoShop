@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import NextLink from 'next/link';
 
 import { Box, Button, Grid, Link, TextField, Typography, Chip } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 
+import { AuthContext } from '../../context';
 import { AuthLayout } from '../../components/layouts'
 import { validations } from '../../utils';
 import { oasisApi } from '../../api';
+import { useRouter } from 'next/router';
 
 type FormData = {
     email: string,
@@ -15,21 +17,25 @@ type FormData = {
 };
 
 const LoginPage = () => {
+    const { loginUser } = useContext(AuthContext);
+    const router = useRouter()
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
     const [showError, setShowError] = useState(false);
 
+
     const onLoginUser = async ({ email, password }: FormData) => {
         setShowError(false);
-        try {
-            const { data } = await oasisApi.post('/user/login', { email, password });
-            const { token, user } = data;
-            console.log({ token, user });
-        } catch (error) {
-            console.log('error en las credenciales');
+
+        const isValidLogin = await loginUser(email, password);
+
+        if (!isValidLogin) {
             setShowError(true);
             setTimeout(() => setShowError(false), 3000);
         }
+
+        //TODO:navegar a la pantalla del usuario
+        router.replace('/');
     }
 
 
