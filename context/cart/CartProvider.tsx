@@ -5,23 +5,39 @@ import { ICartProduct } from '../../interfaces';
 import { CartContext, cartReducer } from './';
 import { OrderSummary } from '../../components/cart/OrderSummary';
 import { env } from 'process';
+import Cookies from 'js-cookie';
 
 
 
 export interface CartState {
+    isLoaded: boolean;
     cart: ICartProduct[];
     numberOfItems: number;
     subTotal: number;
     tax: number;
     total: number;
+    shippingAddress?: ShippingAddress;
+}
+
+export interface ShippingAddress {
+    firstName: string;
+    lastName: string;
+    address: string;
+    address2?: string;
+    zip: string;
+    city: string;
+    country: string;
+    phone: string;
 }
 
 const CART_INITIAL_STATE: CartState = {
+    isLoaded: false,
     cart: [],
     numberOfItems: 0,
     subTotal: 0,
     tax: 0,
     total: 0,
+    shippingAddress: undefined
 }
 
 export const CartProvider: FC<PropsWithChildren<CartState>> = ({ children }) => {
@@ -47,6 +63,31 @@ export const CartProvider: FC<PropsWithChildren<CartState>> = ({ children }) => 
 
 
     }, [])
+
+
+    useEffect(() => {
+        if (Cookies.get('firstName')) {
+            const shippingAddress = {
+                firstName: Cookies.get('firstName') || '',
+                lastName: Cookies.get('lastName') || '',
+                address: Cookies.get('address') || '',
+                address2: Cookies.get('address2') || '',
+                zip: Cookies.get('zip') || '',
+                city: Cookies.get('city') || '',
+                country: Cookies.get('country') || '',
+                phone: Cookies.get('phone') || '',
+            }
+
+            dispatch({
+                type: 'Cart - LoadAddress from Cookies',
+                payload: shippingAddress
+            })
+        }
+
+    }, [])
+
+
+
 
     useEffect(() => {
         Cookie.set('cart', JSON.stringify(state.cart));
@@ -109,13 +150,29 @@ export const CartProvider: FC<PropsWithChildren<CartState>> = ({ children }) => 
         })
     }
 
+    const updateAddress = (address: ShippingAddress) => {
+        Cookies.set('firstName', address.firstName);
+        Cookies.set('lastName', address.lastName);
+        Cookies.set('address', address.address);
+        Cookies.set('address2', address.address2 || '');
+        Cookies.set('zip', address.zip);
+        Cookies.set('city', address.city);
+        Cookies.set('country', address.country);
+        Cookies.set('phone', address.phone);
+        dispatch({
+            type: 'Cart - Update Address',
+            payload: address
+        })
+    }
+
     return (
         <CartContext.Provider value={{
             ...state,
             //Methods
             addProductToCart,
             updateCartQuantity,
-            removeCartProduct
+            removeCartProduct,
+            updateAddress
         }}>
             {children}
         </CartContext.Provider>

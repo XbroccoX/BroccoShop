@@ -38,8 +38,8 @@ const RegisterPage = () => {
             setErrorMessage(message || '');
             setTimeout(() => setShowError(false), 3000);
         }
-
-        router.replace('/');
+        const destination = router.query.p?.toString() || '/'
+        router.replace(destination);
     }
 
     return (
@@ -115,7 +115,7 @@ const RegisterPage = () => {
                         </Grid>
 
                         <Grid item xs={12} display='flex' justifyContent='end'>
-                            <NextLink href="/auth/login" passHref>
+                            <NextLink href={`/auth/login?p=${router.query.p?.toString() || '/'}`} passHref>
                                 <Link underline='always'>
                                     ¿Ya tienes cuenta?
                                 </Link>

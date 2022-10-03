@@ -1,6 +1,9 @@
 import { FC, PropsWithChildren, useReducer, useEffect } from 'react';
+import { useRouter } from 'next/router';
+
 import Cookies from 'js-cookie';
 import axios from 'axios';
+
 import { oasisApi } from '../../api';
 import { IUser } from '../../interfaces/user';
 import { AuthContext, authReducer } from './';
@@ -19,6 +22,7 @@ const Auth_INITIAL_STATE: AuthState = {
 export const AuthProvider: FC<PropsWithChildren<AuthState>> = ({ children }) => {
 
     const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE);
+    const router = useRouter()
 
     useEffect(() => {
         checkToken();
@@ -83,12 +87,20 @@ export const AuthProvider: FC<PropsWithChildren<AuthState>> = ({ children }) => 
         }
     }
 
+    const logout = () => {
+        Cookies.remove('token');
+        Cookies.remove('cart');
+        router.reload();
+    }
+
+
     return (
         <AuthContext.Provider value={{
             ...state,
             //Methods
             loginUser,
-            registerUser
+            registerUser,
+            logout
         }}>
             {children}
         </AuthContext.Provider>
