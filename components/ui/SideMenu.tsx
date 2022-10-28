@@ -1,11 +1,12 @@
 import { useContext, useState } from 'react';
 
 import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from "@mui/material"
-import { AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, EscalatorWarningOutlined, FemaleOutlined, LoginOutlined, MaleOutlined, SearchOutlined, VpnKeyOutlined } from "@mui/icons-material"
+import { AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, EscalatorWarningOutlined, FemaleOutlined, Image, LoginOutlined, MaleOutlined, SearchOutlined, VpnKeyOutlined } from "@mui/icons-material"
 
 import { UiContext } from '../../context/ui/UiContext';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../../context';
+import Cookies from 'js-cookie';
 
 
 export const SideMenu = () => {
@@ -66,7 +67,19 @@ export const SideMenu = () => {
                                 <>
                                     <ListItem button >
                                         <ListItemIcon>
-                                            <AccountCircleOutlined />
+                                            {
+                                                !Cookies.get('imageUser')
+                                                    ? (
+                                                        <AccountCircleOutlined />
+                                                    )
+                                                    : (
+                                                        <img src={Cookies.get('imageUser')}
+                                                            width="40"
+                                                            height="40"
+                                                            style={{ 'borderRadius': '50px' }}
+                                                        />
+                                                    )
+                                            }
                                         </ListItemIcon>
                                         <ListItemText primary={user?.name} />
                                     </ListItem>

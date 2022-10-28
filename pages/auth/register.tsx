@@ -1,5 +1,8 @@
-import { useForm } from 'react-hook-form';
 import NextLink from 'next/link';
+import { GetServerSideProps } from 'next'
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { getSession, signIn } from 'next-auth/react';
 
 import { Box, Button, Grid, Link, TextField, Typography, Chip } from '@mui/material';
 import { ErrorOutlined } from '@mui/icons-material';
@@ -9,7 +12,6 @@ import { validations } from '../../utils';
 import { useState, useContext } from 'react';
 import { oasisApi } from '../../api';
 import { AuthContext } from '../../context';
-import { useRouter } from 'next/router';
 
 
 
@@ -37,9 +39,13 @@ const RegisterPage = () => {
             setShowError(true);
             setErrorMessage(message || '');
             setTimeout(() => setShowError(false), 3000);
+            return;
         }
-        const destination = router.query.p?.toString() || '/'
-        router.replace(destination);
+        /* const destination = router.query.p?.toString() || '/'
+        router.replace(destination); */
+
+        /* -------NEXT AUTH ------------ */
+        await signIn('credentials', { email, password })
     }
 
     return (
@@ -126,6 +132,27 @@ const RegisterPage = () => {
             </form>
         </AuthLayout>
     )
+}
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+    const session = await getSession({ req })   // your fetch function here ;
+    const { p = '/' } = query
+
+    if (session) {
+        return {
+            redirect: {
+                destination: p.toString(),
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
 }
 
 export default RegisterPage
