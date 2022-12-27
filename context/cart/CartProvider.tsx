@@ -1,11 +1,13 @@
 import { FC, PropsWithChildren, useEffect, useReducer } from 'react';
 import Cookie from 'js-cookie';
+import axios from 'axios';
 
-import { ICartProduct, ShippingAddress } from '../../interfaces';
+import { ICartProduct, IOrder, ShippingAddress } from '../../interfaces';
 import { CartContext, cartReducer } from './';
 import { OrderSummary } from '../../components/cart/OrderSummary';
 import { env } from 'process';
 import Cookies from 'js-cookie';
+import { oasisApi } from '../../api';
 
 
 
@@ -154,6 +156,54 @@ export const CartProvider: FC<PropsWithChildren<CartState>> = ({ children }) => 
         })
     }
 
+    const createOrder = async (): Promise<{ hasError: boolean; message: string; }> => {
+
+        if (!state.shippingAddress) {
+            throw new Error("No hay direccion de entrega");
+        }
+
+        const bodyOrder: IOrder = {
+            orderItems: state.cart.map(p => ({
+                ...p,
+                size: p.size!
+            })),
+            shippingAddress: state.shippingAddress,
+            numberOfItems: state.numberOfItems,
+            subTotal: state.subTotal,
+            tax: state.tax,
+            total: state.total,
+            isPaid: false,
+        }
+
+
+        try {
+            const { data } = await oasisApi.post<IOrder>('/orders', bodyOrder);
+
+            //TODO: Dispatch
+            dispatch({ type: 'Cart - Order complete' })
+
+            return {
+                hasError: false,
+                message: data._id!
+            }
+
+        } catch (error) {
+
+            if (axios.isAxiosError(error)) {
+                const { message } = error.response?.data as { message: string }
+                return {
+                    hasError: true,
+                    message: message
+                }
+            }
+            return {
+                hasError: true,
+                message: 'Error no controlado,  hable con el administrador de pagina web'
+            }
+
+        }
+    }
+
     return (
         <CartContext.Provider value={{
             ...state,
@@ -161,7 +211,10 @@ export const CartProvider: FC<PropsWithChildren<CartState>> = ({ children }) => 
             addProductToCart,
             updateCartQuantity,
             removeCartProduct,
-            updateAddress
+            updateAddress,
+
+            //ORDERS
+            createOrder
         }}>
             {children}
         </CartContext.Provider>
