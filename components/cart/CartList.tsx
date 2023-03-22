@@ -8,7 +8,7 @@ import { CartContext } from '../../context';
 
 interface Props {
     editable?: boolean;
-    products?: IOrderItem[]
+    products?: IOrderItem[];
 }
 
 export const CartList: FC<Props> = ({ editable = false, products }) => {

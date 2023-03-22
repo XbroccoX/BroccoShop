@@ -1,69 +1,25 @@
-import { useState } from 'react';
-import { GetServerSideProps, NextPage } from 'next'
-import { PayPalButtons } from '@paypal/react-paypal-js';
-
-
-import { Box, Card, CardContent, Divider, Grid, Typography, Chip, CircularProgress, Button } from '@mui/material';
-import { CreditCardOffOutlined, CreditScoreOutlined } from '@mui/icons-material';
-
-import { ShopLayout } from '../../components/layouts/ShopLayout';
-import { CartList, OrderSummary } from '../../components/cart';
+import { useState } from "react";
+import { NextPage, GetServerSideProps } from "next"
 import { getSession } from 'next-auth/react';
-import { dbOrders } from '../../database';
-import { IOrder } from '../../interfaces';
-import { oasisApi } from '../../api';
-import { useRouter } from 'next/router';
-
-export type OrderResponseBody = {
-    id: string;
-    status:
-    | "COMPLETED"
-    | "SAVED"
-    | "APPROVED"
-    | "VOIDED"
-    | "PAYER_ACTION_REQUIRED";
-};
+import { Box, Card, CardContent, Chip, CircularProgress, Divider, Grid, Typography } from "@mui/material"
+import { dbOrders } from "../../../database";
+import { ShopLayout } from "../../../components/layouts"
+import { IOrder } from '../../../interfaces/order';
+import { CreditScoreOutlined, CreditCardOffOutlined } from "@mui/icons-material";
+import { CartList, OrderSummary } from "../../../components/cart";
 
 interface Props {
     order: IOrder
 }
 
-const OrderPage: NextPage<Props> = ({ order }) => {
+const OrderPageVisualization: NextPage<Props> = ({ order }) => {
 
-    const router = useRouter();
     const { shippingAddress } = order;
     const [isPaying, setIsPaying] = useState(false);
 
-    const onOrderCompleted = async (details: OrderResponseBody) => {
-        if (details.status !== 'COMPLETED') {
-            return alert('No hay pago en PayPal');
-        }
-
-        setIsPaying(true);
-
-        try {
-            const { data } = await oasisApi.post(`orders/pay`, {
-                transactionId: details.id,
-                orderId: order._id,
-            })
-
-            router.reload();
-
-
-        } catch (error) {
-            setIsPaying(false);
-            console.log(error);
-            alert('Error')
-        }
-    }
-
-
-
-
     return (
-        <ShopLayout title={`Resumen de la orden ${order._id}`} pageDescription={'Resumen de la orden'}>
+        <ShopLayout title={`Resumen de la orden: `} pageDescription={"Se encuentra el detalle de la orden del usuario"}>
             <Typography variant='h1' component='h1'>Orden: {order._id}</Typography>
-
             {
                 order.isPaid
                     ? (
@@ -119,12 +75,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                             }} />
 
                             <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
-                                <Box display='flex' justifyContent='center' className='fadeIn'
-                                    sx={{ display: isPaying ? 'flex' : 'none' }}
-                                >
-                                    <CircularProgress />
-                                </Box>
-                                <Box flexDirection='column' sx={{ display: isPaying ? 'none' : 'flex', flex: 1 }}>
+                                <Box flexDirection='column' sx={{ display: 'flex', flex: 1 }}>
                                     {
                                         order.isPaid
                                             ? (
@@ -137,37 +88,13 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                                                 />
                                             )
                                             : (
-                                                <>
-                                                    <PayPalButtons
-                                                        createOrder={(data, actions) => {
-                                                            return actions.order.create({
-                                                                purchase_units: [
-                                                                    {
-                                                                        amount: {
-                                                                            value: `${order.total}`,
-                                                                        },
-                                                                    },
-                                                                ],
-                                                            });
-                                                        }}
-                                                        onApprove={(data, actions) => {
-                                                            return actions.order!.capture().then((details) => {
-                                                                onOrderCompleted(details);
-                                                                // console.log({ details })
-
-                                                                // const name = details.payer.name.given_name;
-                                                                // alert(`Transaction completed by ${name}`);
-                                                            });
-                                                        }}
-                                                    />
-                                                    {/* <Chip
-                                                        sx={{ my: 2 }}
-                                                        label="Pendiente de pago"
-                                                        variant='outlined'
-                                                        color="error"
-                                                        icon={<CreditCardOffOutlined />}
-                                                    /> */}
-                                                </>
+                                                <Chip
+                                                    sx={{ my: 2 }}
+                                                    label="Orden en pendiente"
+                                                    variant='outlined'
+                                                    color="error"
+                                                    icon={<CreditCardOffOutlined />}
+                                                />
 
                                             )
                                     }
@@ -178,7 +105,6 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                     </Card>
                 </Grid>
             </Grid>
-
 
         </ShopLayout>
     )
@@ -194,7 +120,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
     if (!session) {
         return {
             redirect: {
-                destination: `/auth/login?=p/orders/${id}`,
+                destination: `auth/login?=p/admin/orders/${id}`,
                 permanent: false
             }
         }
@@ -205,16 +131,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
     if (!order) {
         return {
             redirect: {
-                destination: '/orders/history',
+                destination: `/admin/orders`,
                 permanent: false
             }
         }
     }
-
     if (order.user !== session.user._id) {
         return {
             redirect: {
-                destination: '/orders/history',
+                destination: `/admin/orders`,
                 permanent: false
             }
         }
@@ -227,4 +152,5 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
     }
 }
 
-export default OrderPage;
+
+export default OrderPageVisualization

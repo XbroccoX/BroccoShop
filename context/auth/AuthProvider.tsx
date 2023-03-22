@@ -31,8 +31,8 @@ export const AuthProvider: FC<PropsWithChildren<AuthState>> = ({ children }) => 
     useEffect(() => {
         if (status === "authenticated") {
             console.log({ user: session?.user })
-            Cookies.set('imageUser', session.user?.image || '')
-            dispatch({ type: 'Auth - Login', payload: session.user as IUser })
+            Cookies.set('imageUser', session?.user?.image || '')
+            dispatch({ type: 'Auth - Login', payload: session?.user as IUser })
         }
     }, [status, session])
 

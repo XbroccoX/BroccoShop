@@ -20,9 +20,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
           }}
         >
-          <AuthProvider>
-            <CartProvider>
-              <UiProvider>
+          <AuthProvider isLoggedIn={false}>
+            <CartProvider isLoaded={false} cart={[]} numberOfItems={0} subTotal={0} tax={0} total={0}>
+              <UiProvider isMenuOpen={false}>
                 <ThemeProvider theme={lightTheme}>
                   <CssBaseline />
                   <Component {...pageProps} />

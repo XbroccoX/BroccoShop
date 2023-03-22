@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material"
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 import { CartContext } from '../../context/cart';
 import { currency } from "../../utils";
 
@@ -12,7 +12,7 @@ interface Props {
     }
 }
 
-export const OrderSummary = ({ orderValues }) => {
+export const OrderSummary: FC<Props> = ({ orderValues }) => {
 
 
     const { numberOfItems, subTotal, tax, total } = useContext(CartContext)
