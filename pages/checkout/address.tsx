@@ -36,7 +36,6 @@ const AddressPage = () => {
 
     const router = useRouter();
 
-    const [defaultCountry, setDefaultCountry] = useState('');
     const { updateAddress } = useContext(CartContext)
 
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<FormData>({
@@ -47,7 +46,6 @@ const AddressPage = () => {
     useEffect(() => {
         const addressFromCookies = getAddressFromCookies();
         reset(addressFromCookies);
-        setDefaultCountry(addressFromCookies.country || countries[0].code)
     }, [reset, getAddressFromCookies])
 
 
@@ -65,14 +63,14 @@ const AddressPage = () => {
 
         <ShopLayout title="Dirección" pageDescription="Confirmar dirección del destino">
             <form onSubmit={handleSubmit(onSubmitAddress)}>
+
+
                 <Typography variant="h1" component='h1'>Dirección</Typography>
 
                 <Grid container spacing={2} sx={{ mt: 2 }}>
 
-
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            type='text'
                             label='Nombre'
                             variant="filled"
                             fullWidth
@@ -85,7 +83,6 @@ const AddressPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            type='text'
                             label='Apellido'
                             variant="filled"
                             fullWidth
@@ -99,7 +96,6 @@ const AddressPage = () => {
 
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            type='text'
                             label='Dirección'
                             variant="filled"
                             fullWidth
@@ -112,7 +108,6 @@ const AddressPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            type='text'
                             label='Dirección 2 (opcional)'
                             variant="filled"
                             fullWidth
@@ -122,7 +117,6 @@ const AddressPage = () => {
 
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            type='text'
                             label='Código Postal'
                             variant="filled"
                             fullWidth
@@ -135,7 +129,6 @@ const AddressPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            type='text'
                             label='Ciudad'
                             variant="filled"
                             fullWidth
@@ -148,34 +141,32 @@ const AddressPage = () => {
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth>
-                            {
-                                !!defaultCountry && (
-                                    <TextField
-                                        select
-                                        variant="filled"
-                                        label="País"
-                                        defaultValue={defaultCountry}
-                                        {...register('country', {
-                                            required: 'Este campo es requerido'
-                                        })}
-                                        error={!!errors.country}
-                                        helperText={errors.country?.message}
-                                    >
-
-                                        {
-                                            countries.map(country => (
-                                                <MenuItem key={country.code} value={country.code}> {country.name} </MenuItem>
-                                            ))
-                                        }
-                                    </TextField>
-                                )
-                            }
-                        </FormControl>
+                        {/* <FormControl fullWidth> */}
+                        <TextField
+                            // select
+                            variant="filled"
+                            label="País"
+                            fullWidth
+                            // defaultValue={ Cookies.get('country') || countries[0].code }
+                            {...register('country', {
+                                required: 'Este campo es requerido'
+                            })}
+                            error={!!errors.country}
+                            helperText={errors.country?.message}
+                        />
+                        {/* {
+                                    countries.map( country => (
+                                        <MenuItem 
+                                            key={ country.code }
+                                            value={ country.code }
+                                        >{ country.name }</MenuItem>
+                                    ))
+                                }
+                            </TextField> */}
+                        {/* </FormControl> */}
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            type='number'
                             label='Teléfono'
                             variant="filled"
                             fullWidth
@@ -195,8 +186,8 @@ const AddressPage = () => {
                         Revisar pedido
                     </Button>
                 </Box>
-            </form>
 
+            </form>
         </ShopLayout>
     )
 }

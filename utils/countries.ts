@@ -81,4 +81,4 @@ export const countries = [{
 {
     name: 'Nicaragua',
     code: 'NIC'
-}]
+}];

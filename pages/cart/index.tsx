@@ -33,7 +33,6 @@ const CartPage = () => {
             <Grid container>
                 <Grid item xs={12} sm={7}>
                     <CartList
-                        products={cart}
                         editable />
 
                 </Grid>
