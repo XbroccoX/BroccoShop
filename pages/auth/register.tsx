@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { getSession, signIn } from 'next-auth/react';
 
-import { Box, Button, Grid, Link, TextField, Typography, Chip } from '@mui/material';
+import { Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { ErrorOutlined } from '@mui/icons-material';
 
 import { AuthLayout } from '../../components/layouts'
@@ -55,12 +55,10 @@ const RegisterPage = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <Typography variant='h1' component="h1">Crear cuenta</Typography>
-                            <Chip
-                                label='Ups salio un error, intentalo nuevamente mas tarde'
-                                color='error'
-                                icon={<ErrorOutlined />}
-                                sx={{ display: showError ? 'flex' : 'none' }}
-                            />
+                            <Box sx={{ display: showError ? 'flex' : 'none' }}>
+                                <Typography color='error'>Ups salio un error, intentalo nuevamente mas tarde </Typography>
+                            </Box>
+
                         </Grid>
 
                         <Grid item xs={12}>

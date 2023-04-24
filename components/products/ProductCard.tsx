@@ -1,6 +1,6 @@
 import { FC, useMemo, useState } from 'react';
 import NextLink from 'next/link';
-import { Grid, Card, CardActionArea, CardMedia, Box, Typography, Link, Chip } from '@mui/material';
+import { Grid, Card, CardActionArea, CardMedia, Box, Typography, Link } from '@mui/material';
 
 import { IProduct } from '../../interfaces'
 
@@ -34,9 +34,9 @@ export const ProductCard: FC<Props> = ({ product }) => {
 
                             {
                                 (product.inStock === 0) && (
-                                    <Chip color='primary' label='No Hay disponibles'
-                                        sx={{ position: 'absolute', zIndex: 99, top: '10px', left: '10px' }}
-                                    />
+                                    <Box sx={{ position: 'absolute', zIndex: 99, top: '10px', left: '10px' }}>
+                                        <Typography color='primary'>No Hay disponibles </Typography>
+                                    </Box>
                                 )
                             }
                             <CardMedia

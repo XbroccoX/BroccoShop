@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { ConfirmationNumberOutlined } from '@mui/icons-material'
-import { Chip, Grid, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { AdminLayout, AuthLayout } from '../../../components/layouts'
 import { IOrder, IUser } from '../../../interfaces';
@@ -22,10 +22,12 @@ const columns: GridColDef[] = [
         renderCell: ({ row }: GridValueGetterParams) => {
             return row.isPaid
                 ? (
-                    <Chip variant='outlined' label='Pagada' color='success' />
+
+                    <Typography color='success'>Pagada</Typography>
                 )
                 : (
-                    <Chip variant='outlined' label='Pendiente' color='error' />
+                    <Typography color='error'>Pendiente</Typography>
+
                 )
         }
     },

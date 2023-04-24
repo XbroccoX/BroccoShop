@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { getSession, signIn, getProviders } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 
-import { Box, Button, Grid, Link, TextField, Typography, Chip, Divider } from '@mui/material';
+import { Box, Button, Grid, Link, TextField, Typography, Divider } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 
 // import { AuthContext } from '../../context';
@@ -63,12 +63,9 @@ const LoginPage = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <Typography variant='h1' component="h1">Iniciar Sesión</Typography>
-                            <Chip
-                                label='No reconocemos ese usuario / password'
-                                color='error'
-                                icon={<ErrorOutline />}
-                                sx={{ display: showError ? 'flex' : 'none' }}
-                            />
+                            <Box sx={{ display: showError ? 'flex' : 'none' }}>
+                                <Typography color='error'>No reconocemos ese usuario / password </Typography>
+                            </Box>
                         </Grid>
 
                         <Grid item xs={12}>

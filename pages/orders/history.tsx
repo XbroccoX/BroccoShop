@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import NextLink from 'next/link';
 import { getSession } from 'next-auth/react';
 
-import { Typography, Grid, Chip, Link } from '@mui/material';
+import { Typography, Grid, Link } from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 import { dbOrders } from '../../database';
@@ -23,8 +23,8 @@ const columns: GridColDef[] = [
         renderCell: (params: GridValueGetterParams) => {
             return (
                 params.row.paid
-                    ? <Chip color="success" label="Pagada" variant='outlined' />
-                    : <Chip color="error" label="No pagada" variant='outlined' />
+                    ? < Typography color='success' > Pagada</Typography >
+                    : < Typography color='error' >No pagada</Typography >
             )
         }
     },

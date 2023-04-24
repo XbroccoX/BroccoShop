@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NextPage, GetServerSideProps } from "next"
 import { getSession } from 'next-auth/react';
-import { Box, Card, CardContent, Chip, CircularProgress, Divider, Grid, Typography } from "@mui/material"
+import { Box, Card, CardContent, CircularProgress, Divider, Grid, Typography } from "@mui/material"
 import { dbOrders } from "../../../database";
 import { ShopLayout } from "../../../components/layouts"
 import { IOrder } from '../../../interfaces/order';
@@ -23,22 +23,14 @@ const OrderPageVisualization: NextPage<Props> = ({ order }) => {
             {
                 order.isPaid
                     ? (
-                        <Chip
-                            sx={{ my: 2 }}
-                            label="Orden ya fue pagada"
-                            variant='outlined'
-                            color="success"
-                            icon={<CreditScoreOutlined />}
-                        />
+                        <Box sx={{ my: 2 }}>
+                            <Typography color='success'>Orden ya fue pagada </Typography>
+                        </Box>
                     )
                     : (
-                        <Chip
-                            sx={{ my: 2 }}
-                            label="Pendiente de pago"
-                            variant='outlined'
-                            color="error"
-                            icon={<CreditCardOffOutlined />}
-                        />
+                        <Box sx={{ my: 2 }}>
+                            <Typography color='success'>Orden pendiente de pago </Typography>
+                        </Box>
 
                     )
             }
@@ -79,22 +71,14 @@ const OrderPageVisualization: NextPage<Props> = ({ order }) => {
                                     {
                                         order.isPaid
                                             ? (
-                                                <Chip
-                                                    sx={{ my: 2 }}
-                                                    label="Orden ya fue pagada"
-                                                    variant='outlined'
-                                                    color="success"
-                                                    icon={<CreditScoreOutlined />}
-                                                />
+                                                <Box sx={{ my: 2 }}>
+                                                    <Typography color='success'>Orden ya fue pagada </Typography>
+                                                </Box>
                                             )
                                             : (
-                                                <Chip
-                                                    sx={{ my: 2 }}
-                                                    label="Orden en pendiente"
-                                                    variant='outlined'
-                                                    color="error"
-                                                    icon={<CreditCardOffOutlined />}
-                                                />
+                                                <Box sx={{ my: 2 }}>
+                                                    <Typography color='success'>Orden pendiente de pago </Typography>
+                                                </Box>
 
                                             )
                                     }

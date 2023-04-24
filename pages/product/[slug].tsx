@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { NextPage, GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { Box, Button, Chip, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 
 import { ShopLayout } from '../../components/layouts';
 import { ProductSlideshow, SizeSelector } from '../../components/products';
@@ -109,7 +109,7 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                     }
                   </Button>
                 )
-                : < Chip label="No hay disponibles" color="error" variant='outlined' />
+                : < Typography color = 'error' > No hay disponibles</Typography >
             }
 
             {/* Descripción */}

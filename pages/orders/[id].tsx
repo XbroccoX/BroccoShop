@@ -3,7 +3,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import { PayPalButtons } from '@paypal/react-paypal-js';
 
 
-import { Box, Card, CardContent, Divider, Grid, Typography, Chip, CircularProgress, Button } from '@mui/material';
+import { Box, Card, CardContent, Divider, Grid, Typography, CircularProgress, Button } from '@mui/material';
 import { CreditCardOffOutlined, CreditScoreOutlined } from '@mui/icons-material';
 
 import { ShopLayout } from '../../components/layouts/ShopLayout';
@@ -63,29 +63,19 @@ const OrderPage: NextPage<Props> = ({ order }) => {
     return (
         <ShopLayout title={`Resumen de la orden ${order._id}`} pageDescription={'Resumen de la orden'}>
             <Typography variant='h1' component='h1'>Orden: {order._id}</Typography>
+            < Box sx={{ my: 2 }}>
+                {
+                    order.isPaid
+                        ? (
+                            <Typography color='success'>Orden ya fue pagada</Typography>
 
-            {
-                order.isPaid
-                    ? (
-                        <Chip
-                            sx={{ my: 2 }}
-                            label="Orden ya fue pagada"
-                            variant='outlined'
-                            color="success"
-                            icon={<CreditScoreOutlined />}
-                        />
-                    )
-                    : (
-                        <Chip
-                            sx={{ my: 2 }}
-                            label="Pendiente de pago"
-                            variant='outlined'
-                            color="error"
-                            icon={<CreditCardOffOutlined />}
-                        />
+                        )
+                        : (
+                            <Typography color='error'>Pendiente de pago</Typography>
 
-                    )
-            }
+                        )
+                }
+            </Box>
 
 
             <Grid container className='fadeIn'>
@@ -125,52 +115,49 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                                     <CircularProgress />
                                 </Box>
                                 <Box flexDirection='column' sx={{ display: isPaying ? 'none' : 'flex', flex: 1 }}>
-                                    {
-                                        order.isPaid
-                                            ? (
-                                                <Chip
-                                                    sx={{ my: 2 }}
-                                                    label="Orden ya fue pagada"
-                                                    variant='outlined'
-                                                    color="success"
-                                                    icon={<CreditScoreOutlined />}
-                                                />
-                                            )
-                                            : (
-                                                <>
-                                                    <PayPalButtons
-                                                        createOrder={(data, actions) => {
-                                                            return actions.order.create({
-                                                                purchase_units: [
-                                                                    {
-                                                                        amount: {
-                                                                            value: `${order.total}`,
-                                                                        },
-                                                                    },
-                                                                ],
-                                                            });
-                                                        }}
-                                                        onApprove={(data, actions) => {
-                                                            return actions.order!.capture().then((details) => {
-                                                                onOrderCompleted(details);
-                                                                // console.log({ details })
+                                    < Box sx={{ my: 2 }}>
 
-                                                                // const name = details.payer.name.given_name;
-                                                                // alert(`Transaction completed by ${name}`);
-                                                            });
-                                                        }}
-                                                    />
-                                                    {/* <Chip
+                                        {
+                                            order.isPaid
+                                                ? (
+                                                    <Typography color='success'>Orden ya fue pagada</Typography>
+                                                )
+                                                : (
+                                                    <>
+                                                        <PayPalButtons
+                                                            createOrder={(data, actions) => {
+                                                                return actions.order.create({
+                                                                    purchase_units: [
+                                                                        {
+                                                                            amount: {
+                                                                                value: `${order.total}`,
+                                                                            },
+                                                                        },
+                                                                    ],
+                                                                });
+                                                            }}
+                                                            onApprove={(data, actions) => {
+                                                                return actions.order!.capture().then((details) => {
+                                                                    onOrderCompleted(details);
+                                                                    // console.log({ details })
+
+                                                                    // const name = details.payer.name.given_name;
+                                                                    // alert(`Transaction completed by ${name}`);
+                                                                });
+                                                            }}
+                                                        />
+                                                        {/* <Chip
                                                         sx={{ my: 2 }}
                                                         label="Pendiente de pago"
                                                         variant='outlined'
                                                         color="error"
                                                         icon={<CreditCardOffOutlined />}
                                                     /> */}
-                                                </>
+                                                    </>
 
-                                            )
-                                    }
+                                                )
+                                        }
+                                    </Box>
                                 </Box>
                             </Box>
 
@@ -180,7 +167,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
             </Grid>
 
 
-        </ShopLayout>
+        </ShopLayout >
     )
 }
 

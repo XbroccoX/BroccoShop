@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import NextLink from 'next/link';
 
-import { Link, Box, Button, Card, CardContent, Divider, Grid, Typography, Chip } from '@mui/material';
+import { Link, Box, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 import Cookies from 'js-cookie';
 
 import { ShopLayout } from '../../components/layouts/ShopLayout';
@@ -88,13 +88,10 @@ const SummaryPage = () => {
                                             >
                                                 Confirmar Orden
                                             </Button>
+                                            <Box sx={{ display: errorMessage ? 'flex' : 'none', mt: 2 }}>
+                                                <Typography color='error'>{errorMessage} </Typography>
+                                            </Box>
 
-                                            <Chip
-                                                color='error'
-                                                label={errorMessage}
-                                                sx={{ display: errorMessage ? 'flex' : 'none', mt: 2 }}
-
-                                            />
                                         </Box>
                                     </>
                                 )

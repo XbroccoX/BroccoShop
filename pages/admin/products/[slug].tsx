@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 
-import { Box, Button, capitalize, Card, CardActions, CardMedia, Checkbox, Chip, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, ListItem, Paper, Radio, RadioGroup, TextField } from '@mui/material';
+import { Box, Button, capitalize, Card, CardActions, CardMedia, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, ListItem, Paper, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import { DriveFileRenameOutline, SaveOutlined, UploadOutlined } from '@mui/icons-material';
 
 import { AdminLayout } from '../../../components/layouts'
@@ -325,14 +325,13 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                                 getValues('tags').map((tag) => {
 
                                     return (
-                                        <Chip
-                                            key={tag}
-                                            label={tag}
-                                            onDelete={() => onDeleteTag(tag)}
+                                        <Button
                                             color="primary"
-                                            size='small'
                                             sx={{ ml: 1, mt: 1 }}
-                                        />
+                                            key={tag}
+                                            onClick={() => onDeleteTag(tag)}
+                                            size='small'
+                                        >{tag}</Button>
                                     );
                                 })}
                         </Box>
@@ -360,12 +359,9 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                             />
 
 
-                            <Chip
-                                label="Es necesario al 2 imagenes"
-                                color='error'
-                                variant='outlined'
-                                sx={{ display: getValues('images').length < 2 ? 'flex' : 'none' }}
-                            />
+                            <Box sx={{ display: getValues('images').length < 2 ? 'flex' : 'none' }}>
+                                <Typography color='error'>Es necesario al 2 imagenes </Typography>
+                            </Box>
 
                             <Grid container spacing={2}>
                                 {
