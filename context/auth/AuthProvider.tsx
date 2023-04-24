@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-import { oasisApi } from '../../api';
+import { oasisApi } from '../../axiosApi';
 import { IUser } from '../../interfaces/user';
 import { AuthContext, authReducer } from './';
 

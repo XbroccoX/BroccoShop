@@ -10,7 +10,7 @@ import { AdminLayout } from '../../../components/layouts'
 import { IProduct } from '../../../interfaces';
 import { dbProducts } from '../../../database';
 import { Product } from '../../../models';
-import { oasisApi } from '../../../api';
+import { oasisApi } from '../../../axiosApi';
 
 
 const validTypes = ['shirts', 'pants', 'hoodies', 'hats']

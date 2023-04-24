@@ -10,7 +10,7 @@ import { ErrorOutlined } from '@mui/icons-material';
 import { AuthLayout } from '../../components/layouts'
 import { validations } from '../../utils';
 import { useState, useContext } from 'react';
-import { oasisApi } from '../../api';
+import { oasisApi } from '../../axiosApi';
 import { AuthContext } from '../../context';
 
 

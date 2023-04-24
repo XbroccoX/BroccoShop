@@ -4,7 +4,7 @@ import { Grid, MenuItem, Select, Typography } from "@mui/material"
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { AdminLayout } from "../../components/layouts"
 import { IUser } from "../../interfaces";
-import { oasisApi } from "../../api";
+import { oasisApi } from "../../axiosApi";
 import { useEffect, useState } from 'react';
 
 const UsersPage = () => {

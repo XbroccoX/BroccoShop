@@ -7,7 +7,7 @@ import { CartContext, cartReducer } from './';
 import { OrderSummary } from '../../components/cart/OrderSummary';
 import { env } from 'process';
 import Cookies from 'js-cookie';
-import { oasisApi } from '../../api';
+import { oasisApi } from '../../axiosApi';
 
 
 

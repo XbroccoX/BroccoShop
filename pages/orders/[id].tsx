@@ -11,7 +11,7 @@ import { CartList, OrderSummary } from '../../components/cart';
 import { getSession } from 'next-auth/react';
 import { dbOrders } from '../../database';
 import { IOrder } from '../../interfaces';
-import { oasisApi } from '../../api';
+import { oasisApi } from '../../axiosApi';
 import { useRouter } from 'next/router';
 
 export type OrderResponseBody = {
